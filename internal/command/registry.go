@@ -30,7 +30,7 @@ type CommandContext struct {
 	DB          *sql.DB
 	Args        []string
 	Fingerprint string
-	MailSender  *mail.MailSender
+	MailSender  mail.MailSender
 	Server      *ssh.Server // Optional, needed for shutdown command
 }
 

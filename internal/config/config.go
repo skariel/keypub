@@ -29,9 +29,19 @@ type Config struct {
 	} `json:"verification"`
 
 	Email struct {
-		ResendKeyPath string `json:"resend_key_path"`
-		FromEmail     string `json:"from_email"`
-		FromName      string `json:"from_name"`
+		EmailService string `json:"email_service"`
+		FromEmail    string `json:"from_email"`
+		FromName     string `json:"from_name"`
+		Resend       struct {
+			ResendKeyPath string `json:"resend_key_path"`
+		} `json:"resend"`
+		SMTP struct {
+			Host     string `json:"host"`
+			Port     int    `json:"port"`
+			Username string `json:"username"`
+			Password string `json:"password"`
+			Secure   bool   `json:"secure"`
+		} `json:"smtp"`
 	} `json:"email"`
 
 	Backup struct {
@@ -69,7 +79,8 @@ func NewConfig() *Config {
 	config.Verification.Duration = 1 * time.Hour
 
 	// Email defaults
-	config.Email.ResendKeyPath = "/home/ubuntu/.keys/.resend"
+	config.Email.EmailService = "resend"
+	config.Email.Resend.ResendKeyPath = "/home/ubuntu/.keys/.resend"
 	config.Email.FromEmail = "confirmations@keypub.sh"
 	config.Email.FromName = "keypub.sh"
 
@@ -109,7 +120,8 @@ func NewTestConfig() *Config {
 	config.Verification.Duration = 5 * time.Minute
 
 	// Email test settings
-	config.Email.ResendKeyPath = "/home/ubuntu/.keys/.resend"
+	config.Email.EmailService = "resend"
+	config.Email.Resend.ResendKeyPath = "/home/ubuntu/.keys/.resend"
 	config.Email.FromEmail = "test-confirmations@keypub.sh"
 	config.Email.FromName = "keypub.sh-test"
 

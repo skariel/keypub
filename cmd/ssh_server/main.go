@@ -63,9 +63,26 @@ func main() {
 	defer verification_cleaner.Close()
 
 	// initialize mail sender
-	mail_sender, err := mail.NewMailSender(cfg.Email.ResendKeyPath, cfg.Email.FromEmail, cfg.Email.FromName)
-	if err != nil {
-		log.Fatalf("Could not initialize MailSender: %s", err)
+	var mail_sender mail.MailSender
+	switch cfg.Email.EmailService {
+	case "resend":
+		mail_sender, err = mail.NewResendMailSender(cfg.Email.Resend.ResendKeyPath, cfg.Email.FromEmail, cfg.Email.FromName)
+		if err != nil {
+			log.Fatalf("Could not initialize ResendMailSender: %s", err)
+		}
+	case "smtp":
+		mail_sender = mail.NewSTMPMailSender(
+			cfg.Email.SMTP.Host,
+			cfg.Email.SMTP.Port,
+			cfg.Email.SMTP.Username,
+			cfg.Email.SMTP.Password,
+			cfg.Email.SMTP.Secure,
+			cfg.Email.FromEmail,
+			cfg.Email.FromName,
+		)
+	default:
+		log.Fatalf("Invalid email_serivce option")
+		return
 	}
 
 	// Only initialize backup if enabled

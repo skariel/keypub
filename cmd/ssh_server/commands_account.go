@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/rand"
 	"database/sql"
 	"fmt"
@@ -190,7 +191,7 @@ func generateVerificationCode() string {
 	return string(result)
 }
 
-func handleRegister(db *sql.DB, mail_sender *mail.MailSender, to_email string, fingerprint string) (info string, err error) {
+func handleRegister(db *sql.DB, mail_sender mail.MailSender, to_email string, fingerprint string) (info string, err error) {
 	// TODO: allow more than 1 mail per fingerprint
 	// Start transaction
 	err = mail.ValidateEmail(to_email)
@@ -276,7 +277,8 @@ func handleRegister(db *sql.DB, mail_sender *mail.MailSender, to_email string, f
 		return "", fmt.Errorf("failed to insert verification code: %w", err)
 	}
 
-	err = mail_sender.SendConfirmation(to_email, verificationCode, fingerprint)
+	ctx := context.Background()
+	err = mail_sender.SendConfirmation(ctx, to_email, verificationCode, fingerprint)
 	if err != nil {
 		return "", fmt.Errorf("Could not send confirmation mail: %s", err)
 	}
