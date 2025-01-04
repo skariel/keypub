@@ -35,7 +35,7 @@ func registerCommandLookup(registry *cmd.CommandRegistry) *cmd.CommandRegistry {
 }
 
 func handleGetEmail(db *sql.DB, callerFingerprint, targetFingerprint string) (string, error) {
-	// TODO: handle cases with more than 1 mail per fingerprint
+	// PRWIP
 	// Start transaction
 	tx, err := db.Begin()
 	if err != nil {
@@ -47,7 +47,7 @@ func handleGetEmail(db *sql.DB, callerFingerprint, targetFingerprint string) (st
 		}
 	}()
 
-	// First get the caller's email
+	// First get the caller's emails
 	var callerEmails []string
 	err = SELECT(table.SSHKeys.Email).
 		FROM(table.SSHKeys).
@@ -60,11 +60,8 @@ func handleGetEmail(db *sql.DB, callerFingerprint, targetFingerprint string) (st
 	if len(callerEmails) == 0 {
 		return "", fmt.Errorf("caller not registered")
 	}
-	if len(callerEmails) > 1 {
-		return "", fmt.Errorf("multiple emails found for caller fingerprint")
-	}
-	callerEmail := callerEmails[0]
 
+	// XXXXXXX
 	// Get target's email and check permissions
 	type TargetInfo struct {
 		Email string
