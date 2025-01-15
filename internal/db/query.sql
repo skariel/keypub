@@ -12,7 +12,7 @@ SELECT grantee_email, created_at FROM email_permissions
 WHERE granter_email = ?
 ORDER BY created_at ASC;
 
--- name: CountFingerprintWithEmailAndFingerPrint :count
+-- name: CountFingerprintWithEmailAndFingerPrint :one
 SELECT COUNT(fingerprint) FROM ssh_keys
 WHERE email = ? AND fingerprint = ?;
 
@@ -20,7 +20,7 @@ WHERE email = ? AND fingerprint = ?;
 SELECT email FROM verification_codes
 WHERE fingerprint = ? AND code = ?;
 
--- name: CountFingerprintWithEmail :count
+-- name: CountFingerprintWithEmail :one
 SELECT COUNT(fingerprint) FROM ssh_keys
 WHERE email = ?;
 
