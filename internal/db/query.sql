@@ -50,10 +50,30 @@ WHERE grantee_email = ?;
 DELETE FROM verification_codes
 WHERE fingerprint = ?;
 
---name DeleteAdminFingerprintsWithFingerprint :exec
+-- name: DeleteAdminFingerprintsWithFingerprint :exec
 DELETE FROM admin_fingerprints
 WHERE fingerprint = ?;
 
---name DeleteSSHKeysWithFingerprint :exec
+-- name: DeleteSSHKeysWithFingerprint :exec
 DELETE FROM ssh_keys
+WHERE fingerprint = ?;
+
+-- name: CountAdminFingerprintswithFingerprint :one
+SELECT COUNT(fingerprint) FROM admin_fingerprints
+WHERE fingerprint = ?;
+
+-- name: CountAdminFingerprints :one
+SELECT COUNT(fingerprint) FROM admin_fingerprints;
+
+-- name: GetAdminFingerprints :many
+SELECT fingerprint, created_at FROM admin_fingerprints
+ORDER BY created_at ASC;
+
+-- name: AddAdminFingerprint :exec
+INSERT INTO admin_fingerprints (fingerprint)
+VALUES (?)
+RETURNING *;
+
+-- name DeleteAdminFingerprintWithFingerprint :exec
+DELETE FROM admin_fingerprints
 WHERE fingerprint = ?;
