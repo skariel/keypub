@@ -29,28 +29,28 @@ INSERT INTO verification_codes (email, fingerprint, code)
 VALUES (?, ?, ?)
 RETURNING *;
 
---name: DeleteVerificationCodeWithFingerprintAndCode :exec
+-- name: DeleteVerificationCodeWithFingerprintAndCode :exec
 DELETE FROM verification_codes
 WHERE fingerprint = ? and code = ?;
 
---name: AddSSHKey :one
+-- name: AddSSHKey :one
 INSERT INTO ssh_keys (fingerprint, email)
 VALUES (?, ?)
 RETURNING *;
 
---name: DeletePermissionsWithGranterEmail :exec
+-- name: DeletePermissionsWithGranterEmail :exec
 DELETE FROM email_permissions
 WHERE granter_email = ?;
 
---name: DeletePermissionsWithGranteeEmail :exec
+-- name: DeletePermissionsWithGranteeEmail :exec
 DELETE FROM email_permissions
 WHERE grantee_email = ?;
 
---name: DeleteVerificationCodesWithFingerprint : exec
+-- name: DeleteVerificationCodesWithFingerprint :exec
 DELETE FROM verification_codes
 WHERE fingerprint = ?;
 
---name DeleteAdminFingerprintsWithFingerprint: exec
+--name DeleteAdminFingerprintsWithFingerprint :exec
 DELETE FROM admin_fingerprints
 WHERE fingerprint = ?;
 
