@@ -74,6 +74,19 @@ INSERT INTO admin_fingerprints (fingerprint)
 VALUES (?)
 RETURNING *;
 
--- name DeleteAdminFingerprintWithFingerprint :exec
+-- name: DeleteAdminFingerprintWithFingerprint :exec
 DELETE FROM admin_fingerprints
 WHERE fingerprint = ?;
+
+-- name: CountEmailPermissionsWithGranterAndGranteeEmail :one
+SELECT COUNT(granter_email) FROM email_permissions
+WHERE granter_email = ? AND grantee_email = ?;
+
+-- name: AddEmailPermission :exec
+INSERT INTO email_permissions (granter_email, grantee_email)
+VALUES (?, ?)
+RETURNING *;
+
+-- name: DeleteEmailPermissionsWithGranterAndGranteeEmail :exec
+DELETE FROM email_permissions
+WHERE granter_email = ? AND grantee_email = ?;
