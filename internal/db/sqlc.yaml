@@ -5,5 +5,5 @@ sql:
     schema: "schema.sql"
     gen:
       go:
-        package: "sqlite"
-        out: "sqlite"
+        package: "db"
+        out: ".gen"
